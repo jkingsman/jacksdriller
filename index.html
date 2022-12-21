@@ -464,7 +464,7 @@
       function gradeInput() {
         const providedBlocks = document
           .querySelector("#drillInput")
-          .value.toUpperCase()
+          .value.toUpperCase().trim()
           .split(" ");
         const gradingArea = document.querySelector("#gradingStatus");
         gradingArea.innerHTML = "";
