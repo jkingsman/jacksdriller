@@ -381,9 +381,6 @@
       function generateLetterListener() {
         const listenerContainer = document.querySelector("#letterListener");
         listenerContainer.innerHTML = "";
-        const characterSet = document.querySelector(
-          "#configCharacterSet"
-        ).value;
         const enabledCharacters = getEnabledCharacterSet();
 
         for (character of enabledCharacters) {
@@ -503,7 +500,7 @@
 
             // display score for this block
             const badBlock = document.createElement("p");
-            badBlock.innerText = `${correctPercentage}% -- "${currentText[i]}" given; "${providedBlocks[i]}" expected`;
+            badBlock.innerText = `${correctPercentage}% -- "${providedBlocks[i]}" given; "${currentText[i]}" expected`;
             badBlock.style.color = "red";
             gradingArea.append(badBlock);
           }
