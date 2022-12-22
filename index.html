@@ -385,7 +385,7 @@
 
         for (character of enabledCharacters) {
           const letterListenerPlayer = new jscw();
-          letterListenerPlayer.setText(Array(5).fill(character).join(" "));
+          letterListenerPlayer.setText(Array(5).fill(character).join(""));
           letterListenerPlayer.setWpm(
             Number(document.querySelector("#configCharacterSpeed").value)
           );
