@@ -454,8 +454,9 @@
         characterSetEnabledSliderEnd.min = 1;
         characterSetEnabledSliderEnd.max = characterSet.length;
 
+        const enabledCharacters = getEnabledCharacterSet();
         document.querySelector("#characterSetEnabledDisplay").innerText =
-          getEnabledCharacterSet();
+          `${enabledCharacters} (${enabledCharacters.length})`;
       }
 
       function gradeInput() {
