@@ -14,7 +14,7 @@
         font-family: sans-serif;
       }
 
-      button {
+      .bigButton {
         width: 300px;
         height: 3em;
       }
@@ -98,23 +98,25 @@
           id="configCharacterSet"
           style="width: 400px"
           value="KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X"
-        /><br />
-        <label for="configCharacterSetEnabledCountStart"
-          >Characters Enabled (Start): </label
-        ><input
-          id="configCharacterSetEnabledCountStart"
-          type="range"
-          value="0"
-        /><br />
-        <label for="configCharacterSetEnabledCountEnd"
-          >Characters Enabled (End): </label
-        ><input
-          id="configCharacterSetEnabledCountEnd"
-          type="range"
-          value="41"
-        />
+        /><button class="changeLetterSet" value="KMURESNAPTLWI.JZ=FOY,VG5/Q92H38B?47C1D60X">Koch</button
+        ><button value="TEANOIS14RHDL25UCMW36?FYPG79/BVKJ80=XQZ-" class="changeLetterSet">CWOps</button><br />
+        <label for="configCharacterSetEnabledCountStart">Characters Enabled (Start): </label
+        ><input id="configCharacterSetEnabledCountStart" type="range" value="2" /><br />
+        <label for="configCharacterSetEnabledCountEnd">Characters Enabled (End): </label
+        ><input id="configCharacterSetEnabledCountEnd" type="range" value="41" />
         <br />
         Enabled characters: <span id="characterSetEnabledDisplay"></span>
+        <br />
+        <input type="radio" id="letterListenerShowAll" name="letterListener" value="letterListenerShowAll" />
+        <label for="letterListenerShowAll">Show all enabled characters in Letter Listener</label>
+        <input
+          type="radio"
+          id="letterListenerShowCurrent"
+          name="letterListener"
+          value="letterListenerShowCurrent"
+          checked
+        />
+        <label for="letterListenerShowCurrent">Show only currently-learning characters in Letter Listener</label>
       </details>
       <details>
         <summary>Speed</summary>
@@ -124,16 +126,12 @@
         <label for="configEffectiveSpeed">Effective Speed (wpm): </label>
         <input id="configEffectiveSpeed" type="number" value="8" />
         <br />
-        <label for="configCharacterSpeedMorseMachine"
-          >Morse Machine Speed (wpm):
-        </label>
+        <label for="configCharacterSpeedMorseMachine">Morse Machine Speed (wpm): </label>
         <input id="configCharacterSpeedMorseMachine" type="number" value="22" />
       </details>
       <details>
         <summary>Frequency</summary>
-        <label for="configFrequency"
-          >Frequency (Hz; set to 0 for random):
-        </label>
+        <label for="configFrequency">Frequency (Hz; set to 0 for random): </label>
         <input id="configFrequency" type="number" value="600" />
         <br />
         <label for="configFrequencyLow">Random Frequency Min (Hz): </label>
@@ -142,14 +140,10 @@
         <label for="configFrequencyHigh">Random Frequency Max (Hz): </label>
         <input id="configFrequencyHigh" type="number" value="900" />
         <br />
-        <label for="configListenerFrequency"
-          >Letter Listener Frequency (Hz; 0 for random):
-        </label>
+        <label for="configListenerFrequency">Letter Listener Frequency (Hz; 0 for random): </label>
         <input id="configListenerFrequency" type="number" value="600" />
         <br />
-        <label for="configMorseMachineFrequency"
-          >Morse Machine Frequency (Hz; 0 for random):
-        </label>
+        <label for="configMorseMachineFrequency">Morse Machine Frequency (Hz; 0 for random): </label>
         <input id="configMorseMachineFrequency" type="number" value="600" />
       </details>
       <details>
@@ -160,19 +154,13 @@
         <label for="configDuration">Drill Duration (letters): </label>
         <input id="configDuration" type="number" value="80" />
         <br />
-        <label for="configBlockLength"
-          >Block length (letters; set to 0 random):
-        </label>
+        <label for="configBlockLength">Block length (letters; set to 0 random): </label>
         <input id="configBlockLength" type="number" value="0" />
         <br />
-        <label for="configBlockLengthLow"
-          >Random Block Length Min (letters):
-        </label>
+        <label for="configBlockLengthLow">Random Block Length Min (letters): </label>
         <input id="configBlockLengthLow" type="number" value="2" />
         <br />
-        <label for="configBlockLengthHigh"
-          >Random Block Length Max (letters):
-        </label>
+        <label for="configBlockLengthHigh">Random Block Length Max (letters): </label>
         <input id="configBlockLengthHigh" type="number" value="8" />
       </details>
     </details>
@@ -186,12 +174,12 @@
       <summary><h2 class="inline">Driller</h2></summary>
       <div id="drillContainer">
         <div id="drillSpace">
-          <button id="newDrill">New Drill [⎇n]</button>
+          <button class="bigButton" id="newDrill">New Drill [⎇n]</button>
           <br /><br />
-          <button id="playStop">Play [⎇ + space]</button>
+          <button class="bigButton" id="playStop">Play [⎇ + space]</button>
           <div id="player"></div>
           <textarea rows="10" cols="40" id="drillInput"></textarea><br />
-          <button id="grade">Grade [⎇g]</button>
+          <button class="bigButton" id="grade">Grade [⎇g]</button>
         </div>
         <div id="gradingStatus"></div>
       </div>
@@ -207,9 +195,7 @@
         <div id="morseMachineStatistics">
           <details open>
             <summary>View Statistics</summary>
-            <div id="morseMachineStatisticsOutput">
-              Use morse machine to get statistics!
-            </div>
+            <div id="morseMachineStatisticsOutput">Use morse machine to get statistics!</div>
           </details>
         </div>
       </div>
@@ -218,15 +204,9 @@
       <hr />
       This project is MIT Licensed and authored by
       <a href="https://jacksbrain.com">Jack Kingsman</a>. Contains
-      <a href="https://git.fkurz.net/dj1yfk/jscwlib" target="_blank"
-        >jscwlib.js</a
-      >
+      <a href="https://git.fkurz.net/dj1yfk/jscwlib" target="_blank">jscwlib.js</a>
       authored by Fabian Kurz, DJ1YFK and licensed under the
-      <a
-        href="https://git.fkurz.net/dj1yfk/jscwlib/src/branch/master/LICENSE.txt"
-        target="_blank"
-        >MIT License</a
-      >.
+      <a href="https://git.fkurz.net/dj1yfk/jscwlib/src/branch/master/LICENSE.txt" target="_blank">MIT License</a>.
     </footer>
     <script src="jscwlib.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -240,11 +220,7 @@
             arr[i][j] =
               i === 0
                 ? j
-                : Math.min(
-                    arr[i - 1][j] + 1,
-                    arr[i][j - 1] + 1,
-                    arr[i - 1][j - 1] + (s[j - 1] === t[i - 1] ? 0 : 1)
-                  );
+                : Math.min(arr[i - 1][j] + 1, arr[i][j - 1] + 1, arr[i - 1][j - 1] + (s[j - 1] === t[i - 1] ? 0 : 1));
           }
         }
         return arr[t.length][s.length];
@@ -271,38 +247,20 @@
       let isPlaying = false;
 
       function configurePlayer() {
-        player.setWpm(
-          Number(document.querySelector("#configCharacterSpeed").value)
-        );
-        player.setEff(
-          Number(document.querySelector("#configEffectiveSpeed").value)
-        );
+        player.setWpm(Number(document.querySelector('#configCharacterSpeed').value));
+        player.setEff(Number(document.querySelector('#configEffectiveSpeed').value));
 
         // deal with potentially random freq
-        player.setFreq(
-          getValueOrRandom(
-            "configFrequency",
-            "configFrequencyLow",
-            "configFrequencyHigh"
-          )
-        );
+        player.setFreq(getValueOrRandom('configFrequency', 'configFrequencyLow', 'configFrequencyHigh'));
 
-        player.setStartDelay(
-          Number(document.querySelector("#configStartDelay").value)
-        );
+        player.setStartDelay(Number(document.querySelector('#configStartDelay').value));
       }
 
       function getEnabledCharacterSet(scrambled = false) {
-        const characterSet = document.querySelector(
-          "#configCharacterSet"
-        ).value;
+        const characterSet = document.querySelector('#configCharacterSet').value;
         const enabledCharacters = characterSet.slice(
-          Number(
-            document.querySelector("#configCharacterSetEnabledCountStart").value
-          ),
-          Number(
-            document.querySelector("#configCharacterSetEnabledCountEnd").value
-          )
+          Number(document.querySelector('#configCharacterSetEnabledCountStart').value),
+          Number(document.querySelector('#configCharacterSetEnabledCountEnd').value)
         );
 
         if (scrambled) {
@@ -315,60 +273,48 @@
       function createDrill() {
         let text = [];
 
-        const targetLength = Number(
-          document.querySelector("#configDuration").value
-        );
-        const blockLength = Number(
-          document.querySelector("#configBlockLength").value
-        );
+        const targetLength = Number(document.querySelector('#configDuration').value);
+        const blockLength = Number(document.querySelector('#configBlockLength').value);
 
-        const randomLengthLowBound = Number(
-          document.querySelector("#configBlockLengthLow").value
-        );
-        const randomLengthHighBound = Number(
-          document.querySelector("#configBlockLengthHigh").value
-        );
+        const randomLengthLowBound = Number(document.querySelector('#configBlockLengthLow').value);
+        const randomLengthHighBound = Number(document.querySelector('#configBlockLengthHigh').value);
 
         // generate blocks
-        while (text.join("").length < targetLength) {
+        while (text.join('').length < targetLength) {
           const randomLetters = getEnabledCharacterSet(true);
-          const length = getValueOrRandom(
-            "configBlockLength",
-            "configBlockLengthLow",
-            "configBlockLengthHigh"
-          );
+          const length = getValueOrRandom('configBlockLength', 'configBlockLengthLow', 'configBlockLengthHigh');
 
-          text.push(randomLetters.slice(0, length).join(""));
+          text.push(randomLetters.slice(0, length).join(''));
         }
 
         // create and configure player text
         player = new jscw();
 
         configurePlayer();
-        player.setText(text.join(" "));
+        player.setText(text.join(' '));
         currentText = text;
 
         // stop player if playing and set play button text
         try {
           player.stop();
         } catch {}
-        document.querySelector("#playStop").innerText = "Play [⎇ + space]";
+        document.querySelector('#playStop').innerText = 'Play [⎇ + space]';
 
         // configure player hooks to control button text
         player.onFinished = () => {
-          document.querySelector("#playStop").innerText = "Play [⎇ + space]";
+          document.querySelector('#playStop').innerText = 'Play [⎇ + space]';
           isPlaying = false;
         };
 
         player.onPlay = () => {
-          document.querySelector("#playStop").innerText = "Stop [⎇ + space]";
+          document.querySelector('#playStop').innerText = 'Stop [⎇ + space]';
           isPlaying = true;
         };
 
         // clean up the UI and get ready
-        document.querySelector("#gradingStatus").innerHTML = "";
-        document.querySelector("#drillInput").value = "";
-        document.querySelector("#drillInput").focus();
+        document.querySelector('#gradingStatus').innerHTML = '';
+        document.querySelector('#drillInput').value = '';
+        document.querySelector('#drillInput').focus();
       }
 
       function saveSettings() {
@@ -376,46 +322,49 @@
         for (elem of settingsElems) {
           localStorage.setItem(elem.id, elem.value);
         }
+
+        // special logic for letter listener config
+        localStorage.setItem('letterListener', document.querySelector('input[name="letterListener"]:checked').id);
       }
 
       function generateLetterListener() {
-        const listenerContainer = document.querySelector("#letterListener");
-        listenerContainer.innerHTML = "";
-        const enabledCharacters = getEnabledCharacterSet();
+        const listenerContainer = document.querySelector('#letterListener');
+        listenerContainer.innerHTML = '';
 
-        for (character of enabledCharacters) {
+        let charactersToRender = getEnabledCharacterSet();
+        if (document.querySelector('input[name="letterListener"]:checked').id == 'letterListenerShowCurrent') {
+          // we should only show the current letter
+          if (charactersToRender.length > 2) {
+            // if we have more than 2, most recent only
+            charactersToRender = charactersToRender.slice(charactersToRender.length - 1, charactersToRender.length);
+          } else {
+            // if we have 2, show both
+            charactersToRender = charactersToRender.slice(0, 2);
+          }
+        }
+
+        for (character of charactersToRender) {
           const letterListenerPlayer = new jscw();
-          letterListenerPlayer.setText(Array(5).fill(character).join(""));
-          letterListenerPlayer.setWpm(
-            Number(document.querySelector("#configCharacterSpeed").value)
-          );
-          letterListenerPlayer.setEff(
-            Number(document.querySelector("#configEffectiveSpeed").value)
-          );
+          letterListenerPlayer.setText(Array(5).fill(character).join(''));
+          letterListenerPlayer.setWpm(Number(document.querySelector('#configCharacterSpeed').value));
+          letterListenerPlayer.setEff(Number(document.querySelector('#configEffectiveSpeed').value));
           letterListenerPlayer.setFreq(
-            getValueOrRandom(
-              "configListenerFrequency",
-              "configFrequencyLow",
-              "configFrequencyHigh"
-            )
+            getValueOrRandom('configListenerFrequency', 'configFrequencyLow', 'configFrequencyHigh')
           );
 
-          const container = document.createElement("div");
-          container.classList.add("letterListenerContainer");
+          const container = document.createElement('div');
+          container.classList.add('letterListenerContainer');
 
-          const header = document.createElement("h1");
+          const header = document.createElement('h1');
           header.innerText = character;
           container.append(header);
 
-          const playerContainer = document.createElement("div");
+          const playerContainer = document.createElement('div');
           playerContainer.id = `letterListener${character}`;
           container.append(playerContainer);
           listenerContainer.append(container);
 
-          letterListenerPlayer.renderPlayer(
-            playerContainer.id,
-            letterListenerPlayer
-          );
+          letterListenerPlayer.renderPlayer(playerContainer.id, letterListenerPlayer);
         }
       }
 
@@ -428,53 +377,50 @@
           }
         }
 
+        // special logic for letter listener config
+        try {
+          document.querySelector('#' + localStorage.getItem('letterListener')).checked = true;
+        } catch {
+          // on first load, not yet saved
+        }
+
         updateSliderBoundsAndPreview();
 
         // after settings load, save to save any new defaults
         saveSettings();
         createDrill();
         generateLetterListener();
-        document.querySelector("#drillInput").focus();
+        document.querySelector('#drillInput').focus();
       }
 
       // update bounds of the slider to know if we need to move it up or down and show the preview
       function updateSliderBoundsAndPreview() {
-        const characterSetEnabledSliderStart = document.querySelector(
-          "#configCharacterSetEnabledCountStart"
-        );
-        const characterSetEnabledSliderEnd = document.querySelector(
-          "#configCharacterSetEnabledCountEnd"
-        );
-        const characterSet = document.querySelector(
-          "#configCharacterSet"
-        ).value;
+        const characterSetEnabledSliderStart = document.querySelector('#configCharacterSetEnabledCountStart');
+        const characterSetEnabledSliderEnd = document.querySelector('#configCharacterSetEnabledCountEnd');
+        const characterSet = document.querySelector('#configCharacterSet').value;
 
         characterSetEnabledSliderStart.min = 0;
         characterSetEnabledSliderStart.max = characterSet.length;
-        characterSetEnabledSliderEnd.min = 1;
+        characterSetEnabledSliderEnd.min = 2;
         characterSetEnabledSliderEnd.max = characterSet.length;
 
         const enabledCharacters = getEnabledCharacterSet();
-        document.querySelector("#characterSetEnabledDisplay").innerText =
-          `${enabledCharacters} (${enabledCharacters.length})`;
+        document.querySelector(
+          '#characterSetEnabledDisplay'
+        ).innerText = `${enabledCharacters} (${enabledCharacters.length})`;
       }
 
       function gradeInput() {
-        const providedBlocks = document
-          .querySelector("#drillInput")
-          .value.toUpperCase().trim()
-          .split(" ");
-        const gradingArea = document.querySelector("#gradingStatus");
-        gradingArea.innerHTML = "";
+        const providedBlocks = document.querySelector('#drillInput').value.toUpperCase().trim().split(' ');
+        const gradingArea = document.querySelector('#gradingStatus');
+        gradingArea.innerHTML = '';
 
         // catch block count mismatch; can't grade
         if (providedBlocks.length !== currentText.length) {
-          const warning = document.createElement("p");
+          const warning = document.createElement('p');
           warning.innerText = `Block mismatch! ${providedBlocks.length} provided but ${currentText.length} expected. Bailing out on scoring.`;
-          const textDisplays = document.createElement("p");
-          textDisplays.innerText = `Expected: "${currentText.join(
-            " "
-          )}"\nProvided: "${providedBlocks.join(" ")}"`;
+          const textDisplays = document.createElement('p');
+          textDisplays.innerText = `Expected: "${currentText.join(' ')}"\nProvided: "${providedBlocks.join(' ')}"`;
 
           gradingArea.appendChild(warning);
           gradingArea.appendChild(textDisplays);
@@ -485,43 +431,38 @@
         for (i = 0; i < providedBlocks.length; i++) {
           if (providedBlocks[i] == currentText[i]) {
             // 100% success; don't bother comparing
-            const goodBlock = document.createElement("p");
+            const goodBlock = document.createElement('p');
             goodBlock.innerText = `100% -- ${providedBlocks[i]}`;
-            goodBlock.style.color = "green";
+            goodBlock.style.color = 'green';
             gradingArea.append(goodBlock);
           } else {
             // mistakes were made
-            const errors = levenshteinDistance(
-              providedBlocks[i],
-              currentText[i]
-            );
+            const errors = levenshteinDistance(providedBlocks[i], currentText[i]);
             totalErrors += errors;
-            const correctPercentage =
-              100 - Math.floor((errors / currentText[i].length) * 100);
+            const correctPercentage = 100 - Math.floor((errors / currentText[i].length) * 100);
 
             // display score for this block
-            const badBlock = document.createElement("p");
+            const badBlock = document.createElement('p');
             badBlock.innerText = `${correctPercentage}% -- "${providedBlocks[i]}" given; "${currentText[i]}" expected`;
-            badBlock.style.color = "red";
+            badBlock.style.color = 'red';
             gradingArea.append(badBlock);
           }
         }
 
         // compute and display overall accuracy
-        const levenshteinPercentage =
-          100 - Math.floor((totalErrors / currentText.join("").length) * 100);
+        const levenshteinPercentage = 100 - Math.floor((totalErrors / currentText.join('').length) * 100);
 
-        const scoreBlock = document.createElement("p");
+        const scoreBlock = document.createElement('p');
         scoreBlock.innerText = `${levenshteinPercentage}% success rate!`;
-        scoreBlock.style.fontWeight = "bold";
+        scoreBlock.style.fontWeight = 'bold';
         if (levenshteinPercentage == 100) {
-          scoreBlock.style.color = "green";
-          scoreBlock.style.textDecoration = "underline";
-          scoreBlock.classList.add("blink");
+          scoreBlock.style.color = 'green';
+          scoreBlock.style.textDecoration = 'underline';
+          scoreBlock.classList.add('blink');
         } else if (levenshteinPercentage >= 90) {
-          scoreBlock.style.color = "green";
+          scoreBlock.style.color = 'green';
         } else {
-          scoreBlock.style.color = "red";
+          scoreBlock.style.color = 'red';
         }
 
         gradingArea.prepend(scoreBlock);
@@ -536,11 +477,11 @@
             player.stop();
           } catch {}
 
-          document.querySelector("#playStop").innerText = "Play [⎇ + space]";
+          document.querySelector('#playStop').innerText = 'Play [⎇ + space]';
           isPlaying = false;
         } else {
           player.play();
-          document.querySelector("#playStop").innerText = "Stop [⎇ + space]";
+          document.querySelector('#playStop').innerText = 'Stop [⎇ + space]';
           isPlaying = true;
         }
       }
@@ -552,9 +493,7 @@
         } else {
           const lowBound = Number(document.querySelector(`#${minID}`).value);
           const highBound = Number(document.querySelector(`#${maxID}`).value);
-          return (
-            Math.floor(Math.random() * (highBound - lowBound + 1)) + lowBound
-          );
+          return Math.floor(Math.random() * (highBound - lowBound + 1)) + lowBound;
         }
       }
 
@@ -575,23 +514,14 @@
       function morseMachinePlay() {
         // if it's a first run, give ourselves a letter
         if (!morseMachineState.currentLetter) {
-          morseMachineState.currentLetter =
-            getEnabledCharacterSet(true)[0].toUpperCase();
+          morseMachineState.currentLetter = getEnabledCharacterSet(true)[0].toUpperCase();
         }
 
         const morseMachinePlayer = new jscw();
-        morseMachinePlayer.setWpm(
-          Number(
-            document.querySelector("#configCharacterSpeedMorseMachine").value
-          )
-        );
+        morseMachinePlayer.setWpm(Number(document.querySelector('#configCharacterSpeedMorseMachine').value));
 
         morseMachinePlayer.setFreq(
-          getValueOrRandom(
-            "configMorseMachineFrequency",
-            "configFrequencyLow",
-            "configFrequencyHigh"
-          )
+          getValueOrRandom('configMorseMachineFrequency', 'configFrequencyLow', 'configFrequencyHigh')
         );
         morseMachinePlayer.setText(morseMachineState.currentLetter);
         morseMachinePlayer.play();
@@ -600,10 +530,8 @@
 
       function gradeMorseMachine() {
         // capture and clear
-        const typedLetter = document
-          .querySelector("#morseMachineInput")
-          .value.toUpperCase();
-        document.querySelector("#morseMachineInput").value = "";
+        const typedLetter = document.querySelector('#morseMachineInput').value.toUpperCase();
+        document.querySelector('#morseMachineInput').value = '';
 
         if (!typedLetter) {
           // window refocus; replay it without marking anything
@@ -612,9 +540,7 @@
 
         if (typedLetter == morseMachineState.currentLetter) {
           // nailed it!
-          const timeToIdentify = Math.round(
-            Date.now() - morseMachineState.currentLetterPlayTime
-          );
+          const timeToIdentify = Math.round(Date.now() - morseMachineState.currentLetterPlayTime);
 
           if (timeToIdentify < 3000) {
             // only log reasonable amounts of time i.e. not a leaving and coming back to the window
@@ -626,16 +552,13 @@
           }
 
           // flash happy green
-          document.querySelector("#morseMachineInput").style.backgroundColor =
-            "green";
+          document.querySelector('#morseMachineInput').style.backgroundColor = 'green';
           setTimeout(() => {
-            document.querySelector("#morseMachineInput").style.backgroundColor =
-              null;
+            document.querySelector('#morseMachineInput').style.backgroundColor = null;
           }, 200);
 
           // set up a new letter
-          morseMachineState.currentLetter =
-            getEnabledCharacterSet(true)[0].toUpperCase();
+          morseMachineState.currentLetter = getEnabledCharacterSet(true)[0].toUpperCase();
 
           // and play it!
           morseMachinePlay();
@@ -649,14 +572,12 @@
           const errorBuzzer = new jscw();
           errorBuzzer.setWpm(20);
           errorBuzzer.setFreq(200);
-          errorBuzzer.setText("e");
+          errorBuzzer.setText('e');
           errorBuzzer.play();
 
-          document.querySelector("#morseMachineInput").style.backgroundColor =
-            "red";
+          document.querySelector('#morseMachineInput').style.backgroundColor = 'red';
           setTimeout(() => {
-            document.querySelector("#morseMachineInput").style.backgroundColor =
-              null;
+            document.querySelector('#morseMachineInput').style.backgroundColor = null;
           }, 200);
 
           // play letter with timeout so we don't step on error buzzer
@@ -667,32 +588,25 @@
       }
 
       function renderMorseMachineStatistics() {
-        const statsContainer = document.querySelector(
-          "#morseMachineStatisticsOutput"
-        );
-        statsContainer.innerHTML = "";
+        const statsContainer = document.querySelector('#morseMachineStatisticsOutput');
+        statsContainer.innerHTML = '';
 
-        const successfulRecords = morseMachineState.gradingRecords.filter(
-          (record) => {
-            return record.success;
-          }
-        );
+        const successfulRecords = morseMachineState.gradingRecords.filter((record) => {
+          return record.success;
+        });
 
-        const errorRecords = morseMachineState.gradingRecords.filter(
-          (record) => {
-            return !record.success;
-          }
-        );
+        const errorRecords = morseMachineState.gradingRecords.filter((record) => {
+          return !record.success;
+        });
 
-        const factsList = document.createElement("ul");
+        const factsList = document.createElement('ul');
 
         // get overall success
-        const lettersDone = document.createElement("li");
+        const lettersDone = document.createElement('li');
         lettersDone.innerText = `${successfulRecords.length} successful of ${
           morseMachineState.gradingRecords.length
         } letters attemped (${Math.round(
-          (successfulRecords.length / morseMachineState.gradingRecords.length) *
-            100
+          (successfulRecords.length / morseMachineState.gradingRecords.length) * 100
         )}%)`;
         factsList.append(lettersDone);
 
@@ -709,15 +623,13 @@
 
         if (highestErrorCounts) {
           // don't bother if we don't have enough data
-          const highestErrorCountTitle = document.createElement("li");
-          highestErrorCountTitle.innerText = "Worst Letters";
+          const highestErrorCountTitle = document.createElement('li');
+          highestErrorCountTitle.innerText = 'Worst Letters';
 
-          const highestErrorCountcontainer = document.createElement("ul");
+          const highestErrorCountcontainer = document.createElement('ul');
 
-          for (const [errorLetter, errorCount] of Object.entries(
-            highestErrorCounts
-          )) {
-            const errorCountLi = document.createElement("li");
+          for (const [errorLetter, errorCount] of Object.entries(highestErrorCounts)) {
+            const errorCountLi = document.createElement('li');
             errorCountLi.innerText = `${errorLetter} -- ${errorCount} errors (${Math.round(
               (errorCount / errorRecords.length) * 100
             )}% of fails)`;
@@ -752,15 +664,13 @@
 
         if (slowestLetters) {
           // don't bother if we don't have enough data
-          const slowestLettersTitle = document.createElement("li");
-          slowestLettersTitle.innerText = "Slowest Letters";
+          const slowestLettersTitle = document.createElement('li');
+          slowestLettersTitle.innerText = 'Slowest Letters';
 
-          const slowestLetterContainer = document.createElement("ul");
+          const slowestLetterContainer = document.createElement('ul');
 
-          for (const [slowLetter, avg] of Object.entries(
-            slowestLetters
-          )) {
-            const slowLetterLi = document.createElement("li");
+          for (const [slowLetter, avg] of Object.entries(slowestLetters)) {
+            const slowLetterLi = document.createElement('li');
             slowLetterLi.innerText = `${slowLetter} -- ${avg}ms avg`;
             slowestLetterContainer.append(slowLetterLi);
           }
@@ -773,46 +683,48 @@
       }
 
       // load settings on page load
-      document.addEventListener("DOMContentLoaded", initPage, false);
+      document.addEventListener('DOMContentLoaded', initPage, false);
 
       // save settings on input change
       document.querySelectorAll("input[id^='config']").forEach((config) => {
-        config.addEventListener("input", saveConfigAndRefresh);
+        config.addEventListener('input', saveConfigAndRefresh);
+      });
+      // special listener for letter listener radios
+      document.querySelectorAll("input[name='letterListener']").forEach((config) => {
+        config.addEventListener('change', saveConfigAndRefresh);
       });
 
       // wire new drill button
-      document
-        .querySelector("#newDrill")
-        .addEventListener("click", createDrill, false);
+      document.querySelector('#newDrill').addEventListener('click', createDrill, false);
 
       // wire grading button
-      document
-        .querySelector("#grade")
-        .addEventListener("click", gradeInput, false);
+      document.querySelector('#grade').addEventListener('click', gradeInput, false);
 
       // wire play/stop button
-      document
-        .querySelector("#playStop")
-        .addEventListener("click", togglePlayer);
+      document.querySelector('#playStop').addEventListener('click', togglePlayer);
 
       // wire morse machine input
-      document
-        .querySelector("#morseMachineInput")
-        .addEventListener("focus", morseMachinePlay);
-      document
-        .querySelector("#morseMachineInput")
-        .addEventListener("input", gradeMorseMachine);
+      document.querySelector('#morseMachineInput').addEventListener('focus', morseMachinePlay);
+      document.querySelector('#morseMachineInput').addEventListener('input', gradeMorseMachine);
+
+      // wire character set buttons
+      document.querySelectorAll('.changeLetterSet').forEach((charsetButton) => {
+        charsetButton.addEventListener('click', () => {
+          document.querySelector('#configCharacterSet').value = charsetButton.value;
+          saveConfigAndRefresh();
+        });
+      });
 
       // listen for shortcut keys
-      document.addEventListener("keydown", (event) => {
+      document.addEventListener('keydown', (event) => {
         if (event.altKey) {
-          if (event.code == "KeyN") {
+          if (event.code == 'KeyN') {
             createDrill();
             event.preventDefault();
-          } else if (event.code == "KeyG") {
+          } else if (event.code == 'KeyG') {
             gradeInput();
             event.preventDefault();
-          } else if (event.code == "Space") {
+          } else if (event.code == 'Space') {
             togglePlayer();
             event.preventDefault();
           }
@@ -820,10 +732,10 @@
       });
 
       // listen for dead key events which should be eaten so we don't contaminate our input
-      document.addEventListener("keyup", (event) => {
+      document.addEventListener('keyup', (event) => {
         if (event.altKey) {
-          if (event.code == "KeyN") {
-            document.querySelector("#drillInput").value = "";
+          if (event.code == 'KeyN') {
+            document.querySelector('#drillInput').value = '';
           }
         }
       });
