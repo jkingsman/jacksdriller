@@ -245,7 +245,7 @@
       var player = new jscw();
       let currentText;
       let isPlaying = false;
-      let hasGradedSinceNewDrill = true;
+      let hasGradedSinceListening = true;
 
       function configurePlayer() {
         player.setWpm(Number(document.querySelector('#configCharacterSpeed').value));
@@ -273,7 +273,7 @@
 
       function createDrill() {
         // give chance to bail if they haven't graded yet
-        if (!hasGradedSinceNewDrill && !confirm("You have not graded since creating this drill. Proceeding will erase the drill.")) {
+        if (!hasGradedSinceListening && !confirm("You have not graded since creating this drill. Proceeding will erase the drill.")) {
           return;
         }
 
@@ -315,10 +315,11 @@
         player.onPlay = () => {
           document.querySelector('#playStop').innerText = 'Stop [⎇ + space]';
           isPlaying = true;
+          hasGradedSinceListening = false;
         };
 
         // clean up the UI and get ready
-        hasGradedSinceNewDrill = false;
+        hasGradedSinceListening = true;
         document.querySelector('#gradingStatus').innerHTML = '';
         document.querySelector('#drillInput').value = '';
         document.querySelector('#drillInput').focus();
@@ -396,7 +397,6 @@
         // after settings load, save to save any new defaults
         saveSettings();
         createDrill();
-        hasGradedSinceNewDrill = false;
         generateLetterListener();
         document.querySelector('#drillInput').focus();
       }
@@ -419,6 +419,8 @@
       }
 
       function gradeInput() {
+        hasGradedSinceListening = true;
+
         const providedBlocks = document.querySelector('#drillInput').value.toUpperCase().trim().split(' ');
         const gradingArea = document.querySelector('#gradingStatus');
         gradingArea.innerHTML = '';
@@ -474,7 +476,6 @@
         }
 
         gradingArea.prepend(scoreBlock);
-        hasGradedSinceNewDrill = true;
       }
 
       // toggle player status
