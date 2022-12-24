@@ -273,7 +273,10 @@
 
       function createDrill() {
         // give chance to bail if they haven't graded yet
-        if (!hasGradedSinceListening && !confirm("You have not graded since creating this drill. Proceeding will erase the drill.")) {
+        if (
+          !hasGradedSinceListening &&
+          !confirm('You have not graded since creating this drill. Proceeding will erase the drill.')
+        ) {
           return;
         }
 
@@ -494,6 +497,8 @@
           document.querySelector('#playStop').innerText = 'Stop [⎇ + space]';
           isPlaying = true;
         }
+
+        document.querySelector('#drillInput').focus();
       }
 
       // helper to get numeric value from given ID, or bounded random from given IDs if value is zero
@@ -508,10 +513,21 @@
       }
 
       function saveConfigAndRefresh() {
+        console.log("Saving")
         saveSettings();
         updateSliderBoundsAndPreview();
         generateLetterListener();
-        // intentionally don't make a new drill -- don't want to erase something maybe in progress
+
+        // only update drill if we're clearly not in the middle of one
+        if (hasGradedSinceListening && document.querySelector('#drillInput').value == '') {
+          createDrill();
+        }
+      }
+
+      let saveTaskID = 0;
+      function debouncedSaveConfigAndRefresh() {
+        clearTimeout(saveTaskID);
+        saveTaskID = setTimeout(saveConfigAndRefresh, 10);
       }
 
       // morse machine
@@ -697,11 +713,11 @@
 
       // save settings on input change
       document.querySelectorAll("input[id^='config']").forEach((config) => {
-        config.addEventListener('input', saveConfigAndRefresh);
+        config.addEventListener('input', debouncedSaveConfigAndRefresh);
       });
       // special listener for letter listener radios
       document.querySelectorAll("input[name='letterListener']").forEach((config) => {
-        config.addEventListener('change', saveConfigAndRefresh);
+        config.addEventListener('change', debouncedSaveConfigAndRefresh);
       });
 
       // wire new drill button
@@ -721,7 +737,7 @@
       document.querySelectorAll('.changeLetterSet').forEach((charsetButton) => {
         charsetButton.addEventListener('click', () => {
           document.querySelector('#configCharacterSet').value = charsetButton.value;
-          saveConfigAndRefresh();
+          debouncedSaveConfigAndRefresh();
         });
       });
 
