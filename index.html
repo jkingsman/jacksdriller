@@ -178,7 +178,16 @@
           <br /><br />
           <button class="bigButton" id="playStop">Play [⎇ + space]</button>
           <div id="player"></div>
-          <textarea rows="10" cols="40" id="drillInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea><br />
+          <textarea
+            rows="10"
+            cols="40"
+            id="drillInput"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          ></textarea
+          ><br />
           <button class="bigButton" id="grade">Grade [⎇g]</button>
         </div>
         <div id="gradingStatus"></div>
@@ -296,18 +305,19 @@
           text.push(randomLetters.slice(0, length).join(''));
         }
 
+        // stop player if playing and set play button text
+        // has to happen before reinstantiating
+        try {
+          player.stop();
+        } catch {}
+        document.querySelector('#playStop').innerText = 'Play [⎇ + space]';
+
         // create and configure player text
         player = new jscw();
 
         configurePlayer();
         player.setText(text.join(' '));
         currentText = text;
-
-        // stop player if playing and set play button text
-        try {
-          player.stop();
-        } catch {}
-        document.querySelector('#playStop').innerText = 'Play [⎇ + space]';
 
         // configure player hooks to control button text
         player.onFinished = () => {
