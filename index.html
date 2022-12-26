@@ -28,6 +28,10 @@
         margin-left: -20px;
       }
 
+      abbr {
+        cursor: pointer;
+      }
+
       .inline {
         display: inline;
       }
@@ -145,6 +149,14 @@
         <br />
         <label for="configMorseMachineFrequency">Morse Machine Frequency (Hz; 0 for random): </label>
         <input id="configMorseMachineFrequency" type="number" value="600" />
+        <br />
+        <label for="configBackgroundMorseVoice"
+          >Background Morse Voice (<abbr
+            onclick="window.speechSynthesis.getVoices().map(voice => {console.log(voice.voiceURI)})"
+            >get list in console</abbr
+          >):
+        </label>
+        <input id="configBackgroundMorseVoice" value="Google US English" />
       </details>
       <details>
         <summary>Timing & Duration</summary>
@@ -162,10 +174,13 @@
         <br />
         <label for="configBlockLengthHigh">Random Block Length Max (letters): </label>
         <input id="configBlockLengthHigh" type="number" value="8" />
+        <br />
+        <label for="configBackgroundMorseDelay">Background Morse Letter Announce Delay (s): </label>
+        <input id="configBackgroundMorseDelay" type="number" value="5" />
       </details>
     </details>
     <hr />
-    <details open>
+    <details>
       <summary><h2 class="inline">Letter Listener</h2></summary>
       <div id="letterListener"></div>
     </details>
@@ -194,7 +209,7 @@
       </div>
     </details>
     <hr />
-    <details open>
+    <details>
       <summary><h2 class="inline">Morse Machine</h2></summary>
       <div id="morseMachineContainer">
         <div id="morseMachineInputContainer">
@@ -208,6 +223,11 @@
           </details>
         </div>
       </div>
+    </details>
+    <hr />
+    <details>
+      <summary><h2 class="inline">Background Morse</h2></summary>
+      <button id="toggleBackgroundMorse" value="stopped">Play Background Morse</button>
     </details>
     <footer>
       <hr />
@@ -335,7 +355,6 @@
         hasGradedSinceListening = true;
         document.querySelector('#gradingStatus').innerHTML = '';
         document.querySelector('#drillInput').value = '';
-        document.querySelector('#drillInput').focus();
       }
 
       function saveSettings() {
@@ -432,8 +451,6 @@
       }
 
       function gradeInput() {
-        hasGradedSinceListening = true;
-
         const providedBlocks = document.querySelector('#drillInput').value.toUpperCase().trim().split(' ');
         const gradingArea = document.querySelector('#gradingStatus');
         gradingArea.innerHTML = '';
@@ -489,6 +506,27 @@
         }
 
         gradingArea.prepend(scoreBlock);
+
+        // store statistics
+        if (!localStorage.getItem('statistics')) {
+          localStorage.setItem('statistics', JSON.stringify({}));
+        }
+
+        if (!hasGradedSinceListening) {
+          console.log('storing');
+          let statisticsArchive = JSON.parse(localStorage.getItem('statistics'));
+          statisticsArchive[Date.now()] = {
+            letterCount: currentText.join('').length,
+            characterSpeed: Number(document.querySelector('#configCharacterSpeed').value),
+            effectiveSpeed: Number(document.querySelector('#configEffectiveSpeed').value),
+          };
+          localStorage.setItem('statistics', JSON.stringify(statisticsArchive));
+        } else {
+          console.log('graded');
+        }
+
+        // do this after logging statistics so we don't double log
+        hasGradedSinceListening = true;
       }
 
       // toggle player status
@@ -717,6 +755,37 @@
         statsContainer.append(factsList);
       }
 
+      function playBackgroundMorse() {
+        // select lettet
+        const randomLetter = getEnabledCharacterSet(true)[0].toUpperCase();
+
+        // cue up player
+        var player = new jscw();
+        player.setWpm(Number(document.querySelector('#configCharacterSpeed').value));
+        player.setFreq(getValueOrRandom('configFrequency', 'configFrequencyLow', 'configFrequencyHigh'));
+        player.text = randomLetter;
+        player.onFinished = setTimeout(() => {
+          const voiceName = document.querySelector('#configBackgroundMorseVoice').value;
+          const utterance = new SpeechSynthesisUtterance(randomLetter);
+
+          const requestedVoice = document.querySelector('#configBackgroundMorseVoice').value;
+          let requestedVoiceObj = window.speechSynthesis
+            .getVoices()
+            .filter((voice) => voice.voiceURI == requestedVoice)[0];
+
+          if (requestedVoiceObj) {
+            utterance.voice = requestedVoiceObj;
+          } else {
+            const fallbackVoice = window.speechSynthesis.getVoices()[0];
+            console.log(`Could not find voice ${requestedVoice}; falling back to ${fallbackVoice}.`);
+            utterance.voice = fallbackVoice;
+          }
+
+          window.speechSynthesis.speak(utterance);
+        }, 1000);
+        player.play();
+      }
+
       // load settings on page load
       document.addEventListener('DOMContentLoaded', initPage, false);
 
@@ -748,6 +817,27 @@
           document.querySelector('#configCharacterSet').value = charsetButton.value;
           debouncedSaveConfigAndRefresh();
         });
+      });
+
+      // wire background morse start/stop
+      let backgroundMorseTimeoutID;
+      document.querySelector('#toggleBackgroundMorse').addEventListener('click', () => {
+        const toggleButton = document.querySelector('#toggleBackgroundMorse');
+        if (toggleButton.value === 'stopped') {
+          // start interval and change button text
+          const delay = Number(document.querySelector('#configBackgroundMorseDelay').value);
+          backgroundMorseTimeoutID = setInterval(playBackgroundMorse, delay * 1000);
+          toggleButton.value = 'playing';
+          toggleButton.innerText = 'Stop Background Morse';
+
+          // kick off first run
+          playBackgroundMorse();
+        } else {
+          // stop it playing
+          clearInterval(backgroundMorseTimeoutID);
+          toggleButton.value = 'stopped';
+          toggleButton.innerText = 'Play Background Morse';
+        }
       });
 
       // listen for shortcut keys
