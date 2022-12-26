@@ -513,16 +513,16 @@
         }
 
         if (!hasGradedSinceListening) {
-          console.log('storing');
           let statisticsArchive = JSON.parse(localStorage.getItem('statistics'));
           statisticsArchive[Date.now()] = {
             letterCount: currentText.join('').length,
             characterSpeed: Number(document.querySelector('#configCharacterSpeed').value),
             effectiveSpeed: Number(document.querySelector('#configEffectiveSpeed').value),
+            letterSet: getEnabledCharacterSet()
           };
           localStorage.setItem('statistics', JSON.stringify(statisticsArchive));
         } else {
-          console.log('graded');
+          // already graded; don't log subsequent gradings
         }
 
         // do this after logging statistics so we don't double log
