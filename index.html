@@ -170,7 +170,7 @@
         <input id="configBlockLength" type="number" value="0" />
         <br />
         <label for="configBlockLengthLow">Random Block Length Min (letters): </label>
-        <input id="configBlockLengthLow" type="number" value="2" />
+        <input id="configBlockLengthLow" type="number" value="3" />
         <br />
         <label for="configBlockLengthHigh">Random Block Length Max (letters): </label>
         <input id="configBlockLengthHigh" type="number" value="8" />
@@ -322,7 +322,11 @@
           const randomLetters = getEnabledCharacterSet(true);
           const length = getValueOrRandom('configBlockLength', 'configBlockLengthLow', 'configBlockLengthHigh');
 
-          text.push(randomLetters.slice(0, length).join(''));
+          let block = [];
+          while (block.length < length) {
+            block.push(randomLetters[Math.floor(Math.random() * randomLetters.length)]);
+          }
+          text.push(block.join(''));
         }
 
         // stop player if playing and set play button text
