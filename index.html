@@ -464,7 +464,7 @@
           const warning = document.createElement('p');
           warning.innerText = `Block mismatch! ${providedBlocks.length} provided but ${currentText.length} expected. Bailing out on scoring.`;
           const textDisplays = document.createElement('p');
-          textDisplays.innerText = `Expected: "${currentText.join(' ')}"\nProvided: "${providedBlocks.join(' ')}"`;
+          textDisplays.innerText = `Expected: "${currentText.join(' ').toUpperCase()}"\nProvided: "${providedBlocks.join(' ').toUpperCase()}"`;
 
           gradingArea.appendChild(warning);
           gradingArea.appendChild(textDisplays);
@@ -473,7 +473,7 @@
 
         let totalErrors = 0;
         for (i = 0; i < providedBlocks.length; i++) {
-          if (providedBlocks[i] == currentText[i]) {
+          if (providedBlocks[i].toUpperCase() == currentText[i].toUpperCase()) {
             // 100% success; don't bother comparing
             const goodBlock = document.createElement('p');
             goodBlock.innerText = `100% -- ${providedBlocks[i]}`;
@@ -487,7 +487,7 @@
 
             // display score for this block
             const badBlock = document.createElement('p');
-            badBlock.innerText = `${correctPercentage}% -- "${providedBlocks[i]}" given; "${currentText[i]}" expected`;
+            badBlock.innerText = `${correctPercentage}% -- "${providedBlocks[i].toUpperCase()}" given; "${currentText[i].toUpperCase()}" expected`;
             badBlock.style.color = 'red';
             gradingArea.append(badBlock);
           }
